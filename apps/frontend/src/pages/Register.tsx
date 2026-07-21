@@ -51,7 +51,7 @@ export const Register = () => {
 
             // Establish the actual WebSocket connection to the backend server
             // Passes roomId, id, and name as query parameters in the URL
-            const ws = new WebSocket(`${import.meta.env.VITE_WEBSOCKET_SERVER_URL}?roomId=${finalRoomId}&id=${currentUserId}&name=${name}`);
+            const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}?roomId=${finalRoomId}&id=${currentUserId}&name=${name}`);
 
             // Save this connection to global state so the rest of the app can use it
             setSocket(ws);
