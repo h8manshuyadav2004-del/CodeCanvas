@@ -30,34 +30,30 @@
 
 FROM node:18
 
-# 1. System dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 \
-    python3-pip \
-    build-essential \
-    golang \
-    && rm -rf /var/lib/apt/lists/*
+# 1. Install Docker CLI (for containerized code sandboxing)
+RUN apt-get update && apt-get install -y docker.io && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
-# 2. Dependencies
 COPY package*.json ./
+
+# 2. Install all dependencies including TypeScript
 RUN npm install
+RUN npm install -g typescript
 
-# 3. Explicitly install typescript globally or locally so `tsc` is available
-RUN npm install typescript -g
-
-# 4. Source code
 COPY . .
 
-# 5. Build TypeScript code
+# 3. Build the TypeScript worker code
 RUN npm run build
 
-# 6. Non-root user setup
-RUN useradd -m myuser && chown -R myuser:myuser /usr/src/app
+# 4. Create non-root user 'myuser' and set up permissions
+RUN useradd -m myuser && \
+    usermod -aG docker myuser && \
+    chown -R myuser:myuser /usr/src/app
+
 USER myuser
 
-CMD [ "node", "dist/index.js" ]
+CMD ["node", "dist/index.js"]
 
 #If someone writes a malicious script like rm -rf / (delete everything), running it directly would destroy your server. By running it in a Docker container with these flags (found in your worker/src/index.ts):
 #--network none: The user's code cannot access the internet (no hacking).
