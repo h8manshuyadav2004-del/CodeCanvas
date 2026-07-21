@@ -21,9 +21,8 @@ async function processSubmission(submission: any) {
 
     console.log(`Processing submission for room id: ${roomId}, submission id: ${submissionId}`);
 
-    const codeDir = path.resolve(`./tmp/user-${Date.now()}`);
+    const codeDir = path.join('/tmp', `user-${Date.now()}`);
     await fs.mkdir(codeDir, { recursive: true });
-
 
     let codeFilePath = "";
     let executionCommand = "";
@@ -33,28 +32,28 @@ async function processSubmission(submission: any) {
     const dockerPath = codeDir.replace(/\\/g, '/');
 
     try {
-        await fs.writeFile(inputFilePath, input, "utf8");
+        await fs.writeFile(inputFilePath, input || "", "utf8");
 
         switch (language) {
             case "javascript":
                 codeFilePath = path.join(codeDir, "userCode.js");
                 await fs.writeFile(codeFilePath, code);
-
-                executionCommand = `docker run --rm --memory="512m" --cpus="0.5" --network none -v "${dockerPath}:/usr/src/app" -w /usr/src/app node:18-alpine node userCode.js input.txt`;
+                // Updated: Pipe input via stdin with sh -c
+                executionCommand = `docker run --rm --memory="512m" --cpus="0.5" --network none -v "${dockerPath}:/usr/src/app" -w /usr/src/app node:18-alpine sh -c "node userCode.js < input.txt"`;
                 break;
 
             case "python":
                 codeFilePath = path.join(codeDir, "userCode.py");
-
                 await fs.writeFile(codeFilePath, code);
-
-                executionCommand = `docker run --rm --memory="512m" --cpus="0.5" --network none -v "${dockerPath}:/usr/src/app" -w /usr/src/app python:3.9-alpine python userCode.py input.txt`;
+                // Updated: Pipe input via stdin with sh -c
+                executionCommand = `docker run --rm --memory="512m" --cpus="0.5" --network none -v "${dockerPath}:/usr/src/app" -w /usr/src/app python:3.9-alpine sh -c "python userCode.py < input.txt"`;
                 break;
 
             case "cpp":
                 codeFilePath = path.join(codeDir, "userCode.cpp");
                 await fs.writeFile(codeFilePath, code);
-                executionCommand = `docker run --rm --memory="512m" --cpus="0.5" --network none -v "${dockerPath}:/usr/src/app" -w /usr/src/app gcc:latest sh -c "g++ userCode.cpp -o a.out && ./a.out < input.txt"`;
+                // Updated: Switched to alpine image matching dind.Dockerfile
+                executionCommand = `docker run --rm --memory="512m" --cpus="0.5" --network none -v "${dockerPath}:/usr/src/app" -w /usr/src/app frolvlad/alpine-gxx sh -c "g++ userCode.cpp -o a.out && ./a.out < input.txt"`;
                 break;
 
             case "go":  
@@ -63,7 +62,8 @@ async function processSubmission(submission: any) {
                 executionCommand = `docker run --rm --memory="512m" --cpus="0.5" --network none -v "${dockerPath}:/usr/src/app" -w /usr/src/app golang:1.20-alpine sh -c "go run userCode.go < input.txt"`;
                 break;
 
-            default: throw new Error("Unsupported language");
+            default: 
+                throw new Error("Unsupported language");
         }
     } catch (e) {
         console.error("Failed to prepare code file or Docker command", e);
