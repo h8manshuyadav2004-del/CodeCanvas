@@ -1,61 +1,30 @@
-import { Terminal, Trash2, FileText } from "lucide-react";
+import { Terminal, Trash2, FileText, Clock3, MemoryStick, CircleCheck } from "lucide-react";
+import { IconButton } from "@/components/ui/icon-button";
+import { StatusChip } from "@/components/ui/status-chip";
 
-interface CodeOutputProps {
-  output: string[];
-  onClear: () => void;
-  input: string;
-  onInputChange: (value: any) => void;
-}
+interface CodeOutputProps { output: string[]; onClear: () => void; input: string; onInputChange: (value: any) => void; }
 
 export const CodeOutput = ({ output, onClear, input, onInputChange }: CodeOutputProps) => {
+  const hasOutput = output.length > 0;
   return (
-    <div className="space-y-4 h-full flex flex-col">
-      {/* Input Section */}
-      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-4 shadow-xl">
-        <div className="flex items-center gap-2 mb-3">
-          <FileText className="w-5 h-5 text-green-400" />
-          <h3 className="text-lg font-semibold text-white">Input</h3>
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="border-b border-border px-4 py-4">
+        <div className="flex items-center justify-between"><div><h2 className="text-sm font-semibold text-foreground">Run console</h2><p className="mt-0.5 text-xs text-muted-foreground">Input, results, and diagnostics</p></div><IconButton label="Clear output" onClick={onClear} className="text-muted-foreground hover:text-red-300"><Trash2 /></IconButton></div>
+        <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
+          <div className="rounded-lg bg-muted px-2.5 py-2"><StatusChip status={hasOutput ? "success" : "neutral"} className="text-xs">{hasOutput ? "Completed" : "Ready"}</StatusChip></div>
+          <div className="flex items-center gap-1.5 rounded-lg bg-muted px-2.5 py-2 text-muted-foreground"><Clock3 className="size-3.5" /> Time —</div>
+          <div className="flex items-center gap-1.5 rounded-lg bg-muted px-2.5 py-2 text-muted-foreground"><MemoryStick className="size-3.5" /> Memory —</div>
         </div>
-        <textarea
-          value={input}
-          onChange={(e) => onInputChange(e)}
-          placeholder="Enter input for your code like...&#10;5&#10;10"
-          className="w-full h-32 bg-gray-800/50 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-        />
       </div>
-
-      {/* Output Section */}
-      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-4 shadow-xl flex-1 flex flex-col min-h-0">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Terminal className="w-5 h-5 text-green-400" />
-            <h3 className="text-lg font-semibold text-white">Output</h3>
-          </div>
-          <button
-            onClick={onClear}
-            className="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-all duration-200 group"
-            title="Clear output"
-          >
-            <Trash2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
-          </button>
-        </div>
-        
-        <div className="flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-4 overflow-y-auto custom-scrollbar min-h-0">
-          {output.length > 0 ? (
-            <div className="space-y-1">
-              {output.map((line, index) => (
-                <pre key={index} className="text-green-400 text-sm whitespace-pre-wrap break-all font-mono">
-                  {line}
-                </pre>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <Terminal className="w-12 h-12 text-gray-500 mx-auto mb-2" />
-              <p className="text-gray-400">No output yet</p>
-              <p className="text-gray-500 text-sm">Submit your code to see results</p>
-            </div>
-          )}
+      <div className="border-b border-border p-4">
+        <label className="mb-2 flex items-center gap-2 text-sm font-medium text-foreground"><FileText className="size-4 text-muted-foreground" /> Standard input</label>
+        <textarea value={input} onChange={(event) => onInputChange(event)} placeholder={"Provide input for this run\n5\n10"} className="h-24 w-full resize-none rounded-lg border border-border bg-muted p-3 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20" />
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col p-4">
+        <div className="mb-3 flex items-center gap-2"><Terminal className="size-4 text-muted-foreground" /><h3 className="text-sm font-medium text-foreground">Output</h3></div>
+        <div className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-border bg-[#111111] p-3 font-mono text-sm">
+          {hasOutput ? <div className="space-y-1">{output.map((line, index) => <pre key={index} className="whitespace-pre-wrap break-all text-zinc-200">{line}</pre>)}</div> :
+            <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground"><CircleCheck className="mb-3 size-7" /><p className="text-sm">Ready to run</p><p className="mt-1 text-xs">Your results and errors will appear here.</p></div>}
         </div>
       </div>
     </div>

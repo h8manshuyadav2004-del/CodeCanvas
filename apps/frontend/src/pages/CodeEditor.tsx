@@ -294,6 +294,15 @@ export const CodeEditor = () => {
         }));
     };
 
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.origin + "/" + user.roomId);
+            toast.success("Invite link copied");
+        } catch {
+            toast.error("Unable to copy invite link");
+        }
+    };
+
     const handleAIAction = (ed: any, prompt: string) => {
         const selection = ed.getSelection();
         const selectedText = ed.getModel().getValueInRange(selection);
@@ -381,8 +390,8 @@ export const CodeEditor = () => {
     }
 
     return (
-        <div className="w-full h-full min-h-screen  min-w-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white">
-            <div className="container mx-auto p-4 max-w-7xl">
+        <div className="min-h-screen bg-background text-foreground">
+            <div className="mx-auto max-w-[1600px] px-4 lg:px-6">
                 <CodeEditorHeader
                     language={language}
                     onLanguageChange={handleLanguageChange}
@@ -391,14 +400,16 @@ export const CodeEditor = () => {
                     currentButtonState={currentButtonState}
                     activeView={activeView}
                     onViewChange={setActiveView}
+                    participantCount={connectedUsers.length}
+                    onShare={handleShare}
                 />
 
-                <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 h-[calc(100vh-160px)]">
+                <div className="grid h-[calc(100vh-88px)] grid-cols-1 gap-4 xl:grid-cols-4">
                     {/* Code Editor / Whiteboard - Takes 75% space on desktop */}
                     <div className="xl:col-span-3 order-2 xl:order-1 h-full min-h-0">
-                        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl overflow-hidden shadow-xl h-full">
+                        <div className="h-full overflow-hidden rounded-xl border border-border bg-[#1e1e1e] shadow-[0_10px_32px_rgba(0,0,0,.16)]">
                             {activeView === 'editor' ? (
-                                <div className="flex flex-grow h-full py-4">
+                                <div className="flex h-full flex-grow">
                                     <MonacoEditor
                                     options={{
                                         smoothScrolling: true,
@@ -423,9 +434,9 @@ export const CodeEditor = () => {
                     </div>
 
                     {/* Unified Right Sidebar: Users, Chat, I/O */}
-                    <div className="xl:col-span-1 order-1 xl:order-2 h-full min-h-0 flex flex-col gap-4">
+                    <aside className="order-1 flex h-full min-h-0 flex-col rounded-xl border border-border bg-card xl:col-span-1 xl:order-2">
                         {/* Tabs Navigation */}
-                        <div className="flex bg-gray-900/60 p-1 rounded-lg shrink-0 shadow-lg">
+                        <div className="flex shrink-0 border-b border-border p-2">
                             <button 
                                 onClick={() => setActiveTab('users')} 
                                 className={`flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 ${activeTab === 'users' ? 'bg-blue-600 text-white shadow' : 'text-gray-400 hover:text-white hover:bg-white/10'}`}
@@ -487,7 +498,7 @@ export const CodeEditor = () => {
                                 onInputChange={handleInputChange}
                             />
                         </div>
-                    </div>
+                    </aside>
                 </div>
             </div>
 

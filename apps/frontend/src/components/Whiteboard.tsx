@@ -46,7 +46,7 @@ export default function Whiteboard({ roomId, username, socket }: WhiteboardProps
     const saveTimer = useRef<ReturnType<typeof setTimeout>>();
 
     const myColor = getUserColor(username);
-    const themeColor = "#22d3ee"; 
+    const themeColor = "#7aa2f7";
 
     function triggerAutoSave() {
         clearTimeout(saveTimer.current);
@@ -251,21 +251,21 @@ export default function Whiteboard({ roomId, username, socket }: WhiteboardProps
     };
 
     return (
-        <div className="w-full h-full flex flex-col bg-[#11172a] overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 flex-wrap bg-[#1a2235]">
+        <div className="flex size-full flex-col overflow-hidden bg-[#1e1e1e]">
+            <div className="flex flex-wrap items-center gap-2 border-b border-border bg-card px-4 py-3">
                 <div className="flex items-center gap-1.5 mr-1">
                     <svg width="20" height="8" viewBox="0 0 20 8">
                         <path d="M0 4 Q10 0 20 4" stroke={myColor} strokeWidth="2.5" fill="none" strokeLinecap="round" />
                     </svg>
                 </div>
 
-                <div className="w-px h-4 bg-white/10" />
+                <div className="h-4 w-px bg-border" />
 
                 {[TOOLS.PEN, TOOLS.ERASER].map((t) => (
                     <button
                         key={t}
                         onClick={() => setTool(t)}
-                        className="text-xs px-3 py-1.5 rounded-md border transition-all cursor-pointer"
+                        className="rounded-md border px-3 py-1.5 text-xs transition-colors"
                         style={{
                             borderColor: tool === t ? themeColor : "rgba(255,255,255,0.15)",
                             background: tool === t ? `${themeColor}22` : "transparent",
@@ -299,7 +299,7 @@ export default function Whiteboard({ roomId, username, socket }: WhiteboardProps
 
                 <button
                     onClick={clearBoard}
-                    className="ml-auto text-xs px-3 py-1.5 rounded-md border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 cursor-pointer transition-all"
+                    className="ml-auto rounded-md border border-red-500/20 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 transition-colors hover:bg-red-500/20"
                 >
                     Clear Board
                 </button>
@@ -310,7 +310,7 @@ export default function Whiteboard({ roomId, username, socket }: WhiteboardProps
                     ref={canvasRef}
                     width={1600} height={900}
                     className="absolute inset-0 w-full h-full"
-                    style={{ background: "#0b1020" }}
+                    style={{ background: "#1e1e1e" }}
                 />
                 <canvas
                     ref={overlayRef}
