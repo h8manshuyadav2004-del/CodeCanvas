@@ -135,7 +135,7 @@ export const Register = () => {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(75,126,255,.14),transparent_25%),radial-gradient(circle_at_90%_80%,rgba(129,92,246,.1),transparent_28%)]" />
             <div className="relative mx-auto flex min-h-[calc(100vh-48px)] max-w-6xl flex-col justify-center py-10 lg:grid lg:grid-cols-[1fr_440px] lg:gap-20">
                 <section className="mb-12 max-w-xl lg:mb-0">
-                    <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold tracking-tight"><span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20"><FiCode className="size-5" /></span> CodeSync</Link>
+                    <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold tracking-tight"><span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20"><FiCode className="size-5" /></span> CodeCanvas</Link>
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
                         <p className="mt-14 text-sm font-medium text-blue-300">Your team is one room away</p>
                         <h1 className="mt-4 text-balance text-5xl font-semibold tracking-[-0.05em] sm:text-6xl">Build together, without losing the thread.</h1>

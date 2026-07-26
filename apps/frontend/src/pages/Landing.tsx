@@ -14,7 +14,7 @@ export const Landing = () => (
   <main className="overflow-hidden bg-background text-foreground">
     <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_50%_-10%,rgba(75,126,255,.16),transparent_30%),radial-gradient(circle_at_100%_30%,rgba(111,64,255,.08),transparent_24%)]" />
     <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-      <Link to="/" className="flex items-center gap-2 text-sm font-semibold tracking-tight"><span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"><Code2 className="size-4" /></span> CodeSync</Link>
+      <Link to="/" className="flex items-center gap-2 text-sm font-semibold tracking-tight"><span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"><Code2 className="size-4" /></span> CodeCanvas</Link>
       <Link to="/join"><Button variant="outline" size="sm">Open a room <ArrowRight /></Button></Link>
     </nav>
 
@@ -22,7 +22,7 @@ export const Landing = () => (
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground"><Sparkles className="size-3.5 text-blue-300" /> Built for teams that think in code</div>
         <h1 className="mx-auto max-w-5xl text-balance text-5xl font-semibold tracking-[-0.055em] text-foreground sm:text-7xl">The collaborative workspace your code deserves.</h1>
-        <p className="mx-auto mt-7 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">CodeSync brings your editor, execution, whiteboard, and team presence into one beautifully focused room.</p>
+        <p className="mx-auto mt-7 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">CodeCanvas brings your editor, execution, whiteboard, and team presence into one beautifully focused room.</p>
         <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
           <Link to="/join"><Button size="lg" className="h-12 px-6">Start a workspace <ArrowRight /></Button></Link>
           <a href="#collaboration"><Button size="lg" variant="outline" className="h-12 px-6">Explore the product</Button></a>
@@ -52,6 +52,6 @@ export const Landing = () => (
 
     <section className="mx-6 mb-20 rounded-2xl border border-border bg-card px-6 py-16 text-center sm:mx-auto sm:max-w-7xl"><h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Bring your next build session together.</h2><p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-muted-foreground">No setup ceremony. Create a room, invite the team, and start making progress.</p><Link to="/join" className="mt-8 inline-flex"><Button size="lg" className="h-12 px-6">Create your workspace <ArrowRight /></Button></Link></section>
 
-    <footer className="border-t border-border"><div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span className="flex items-center gap-2 font-medium text-foreground"><Code2 className="size-4 text-blue-300" /> CodeSync</span><span>Collaborative coding, beautifully focused.</span></div></footer>
+    <footer className="border-t border-border"><div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span className="flex items-center gap-2 font-medium text-foreground"><Code2 className="size-4 text-blue-300" /> CodeCanvas</span><span>Collaborative coding, beautifully focused.</span></div></footer>
   </main>
 )

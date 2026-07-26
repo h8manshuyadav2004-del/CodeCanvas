@@ -31,7 +31,7 @@ export const CodeEditorHeader = ({
           <Code2 className="size-5" />
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold tracking-tight text-foreground">CodeSync</p>
+          <p className="truncate text-sm font-semibold tracking-tight text-foreground">CodeCanvas</p>
           <p className="hidden text-xs text-muted-foreground sm:block">Collaborative workspace</p>
         </div>
       </div>
