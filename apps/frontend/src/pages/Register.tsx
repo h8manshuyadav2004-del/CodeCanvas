@@ -2,13 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { userAtom } from '../atoms/userAtom'; // Global state for the current user
-import { useNavigate, useParams } from 'react-router-dom'; // Hooks for routing/navigation
+import { Link, useNavigate, useParams } from 'react-router-dom'; // Hooks for routing/navigation
 import { socketAtom } from '../atoms/socketAtom'; // Global state for the WebSocket connection
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FiCode, FiUsers, FiUser, FiHash } from 'react-icons/fi'; // Icons for the UI
 import { motion } from 'framer-motion'; // Library for smooth animations
-import { GridPattern } from "../components/ui/aceternity/grid-pattern"; // UI background component
 
 export const Register = () => {
     // --- LOCAL STATE ---
@@ -131,98 +130,33 @@ export const Register = () => {
         setRoomId(params.roomId || "");
     }, [])
 
-    // --- UI RENDER (JSX) ---
     return (
-        <div className="fixed inset-0 w-screen h-screen overflow-y-auto bg-gradient-to-br from-gray-900 to-gray-800 py-8 flex items-start justify-center">
-            {/* Cool background pattern */}
-            <GridPattern /> 
-            
-            <div className="w-full max-w-md px-4 sm:px-0 relative z-10 mt-8 mb-8">
-                {/* Framer Motion wrapper to make the form slide up and fade in smoothly */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="w-full"
-                >
-                    {/* Header Section */}
-                    <div className="mb-8 text-center">
-                        <div className="flex justify-center mb-4">
-                            <div className="h-16 w-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                <FiCode className="h-8 w-8 text-white" />
-                            </div>
+        <main className="relative min-h-screen overflow-hidden bg-background px-5 py-6 text-foreground sm:px-8">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(75,126,255,.14),transparent_25%),radial-gradient(circle_at_90%_80%,rgba(129,92,246,.1),transparent_28%)]" />
+            <div className="relative mx-auto flex min-h-[calc(100vh-48px)] max-w-6xl flex-col justify-center py-10 lg:grid lg:grid-cols-[1fr_440px] lg:gap-20">
+                <section className="mb-12 max-w-xl lg:mb-0">
+                    <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold tracking-tight"><span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20"><FiCode className="size-5" /></span> CodeSync</Link>
+                    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
+                        <p className="mt-14 text-sm font-medium text-blue-300">Your team is one room away</p>
+                        <h1 className="mt-4 text-balance text-5xl font-semibold tracking-[-0.05em] sm:text-6xl">Build together, without losing the thread.</h1>
+                        <p className="mt-6 max-w-lg text-lg leading-8 text-muted-foreground">Create a focused shared workspace for code, conversations, execution, and whiteboarding.</p>
+                        <div className="mt-10 grid grid-cols-2 gap-3 text-sm text-muted-foreground">
+                            <div className="rounded-xl border border-border bg-card/70 p-4"><FiUsers className="mb-3 size-5 text-blue-300" /><p className="font-medium text-foreground">Live presence</p><p className="mt-1 text-xs leading-5">Work in the same room.</p></div>
+                            <div className="rounded-xl border border-border bg-card/70 p-4"><FiCode className="mb-3 size-5 text-emerald-300" /><p className="font-medium text-foreground">Instant feedback</p><p className="mt-1 text-xs leading-5">Run code as a team.</p></div>
                         </div>
-                        <h1 className="text-3xl font-bold text-white mb-2">CodeSync</h1>
-                        <p className="text-gray-400">Real-time collaborative coding platform</p>
+                    </motion.div>
+                </section>
+
+                <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.1 }} className="rounded-2xl border border-border bg-card p-6 shadow-[0_24px_80px_rgba(0,0,0,.32)] sm:p-8">
+                    <div className="mb-8"><p className="text-sm font-medium text-blue-300">Enter workspace</p><h2 className="mt-2 text-2xl font-semibold tracking-tight">Join your collaborators</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">Use an invite ID or start a new shared room.</p></div>
+                    <div className="space-y-5">
+                        <div><label htmlFor="name" className="mb-2 block text-sm font-medium">Your name</label><div className="relative"><FiUser className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input id="name" type="text" placeholder="How should your team know you?" value={name} onChange={(event) => setName(event.target.value)} className="h-12 pl-10" /></div></div>
+                        <div><div className="mb-2 flex items-center justify-between"><label htmlFor="roomId" className="text-sm font-medium">Room ID</label><span className="text-xs text-muted-foreground">Optional for a new room</span></div><div className="relative"><FiHash className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input id="roomId" type="text" placeholder="Paste an invite room ID" value={roomId} onChange={(event) => setRoomId(event.target.value)} className="h-12 pl-10 font-mono" /></div></div>
+                        <div className="space-y-3 pt-2"><Button className="h-12 w-full" disabled={loading || !name} onClick={handleNewRoom}>{loading ? <span className="size-4 animate-spin rounded-full border-2 border-white/30 border-t-white" /> : <FiCode />} {loading ? "Preparing workspace..." : "Create new workspace"}</Button><Button variant="outline" className="h-12 w-full" disabled={loading || !roomId || !name} onClick={handleJoinRoom}><FiUsers /> {loading ? "Connecting..." : "Join with invite"}</Button></div>
                     </div>
-
-                    {/* Form Section */}
-                    <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-xl p-6 border border-gray-700/50">
-                        <div className="space-y-5">
-                            
-                            {/* Name Input */}
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1.5">Your Name</label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FiUser className="text-gray-500" />
-                                    </div>
-                                    <Input
-                                        id="name"
-                                        type="text"
-                                        placeholder="Enter your name"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)} // Updates 'name' state as user types
-                                        className="pl-10 bg-gray-900/70 border-gray-700 text-white focus-visible:ring-blue-500 focus-visible:border-blue-500"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Room ID Input */}
-                            <div>
-                                <label htmlFor="roomId" className="block text-sm font-medium text-gray-300 mb-1.5">Room ID</label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FiHash className="text-gray-500" />
-                                    </div>
-                                    <Input
-                                        id="roomId"
-                                        type="text"
-                                        placeholder="Room ID (Optional)"
-                                        value={roomId}
-                                        onChange={(e) => setRoomId(e.target.value)} // Updates 'roomId' state as user types
-                                        className="pl-10 bg-gray-900/70 border-gray-700 text-white focus-visible:ring-blue-500 focus-visible:border-blue-500"
-                                    />
-                                </div>
-                                <p className="mt-1.5 text-xs text-gray-400">Leave empty to create a new room</p>
-                            </div>
-
-                            {/* Action Buttons */}
-                            <div className="pt-2 space-y-3">
-                                {/* Create Room Button - Disabled if loading or if no name is entered */}
-                                <Button
-                                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-5 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
-                                    disabled={loading || !name}
-                                    onClick={handleNewRoom}
-                                >
-                                    <FiCode className="h-4 w-4" />
-                                    {loading ? 'Creating...' : 'Create New Room'}
-                                </Button>
-
-                                {/* Join Room Button - Disabled if loading, no name, or no Room ID is entered */}
-                                <Button
-                                    className="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-5 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 border border-gray-600/50"
-                                    disabled={loading || !roomId || !name}
-                                    onClick={handleJoinRoom}
-                                >
-                                    <FiUsers className="h-4 w-4" />
-                                    {loading ? 'Joining...' : 'Join Existing Room'}
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
+                    <p className="mt-7 border-t border-border pt-5 text-center text-xs leading-5 text-muted-foreground">By continuing, you will join a collaborative code session. Nothing to install.</p>
+                </motion.section>
             </div>
-        </div>
+        </main>
     );
 };
