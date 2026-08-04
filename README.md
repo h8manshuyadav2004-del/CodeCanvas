@@ -23,7 +23,7 @@ CodeCanvas combines a Monaco-based editor, conflict-free Yjs document sync, shar
 
 | Collaborative editor | Shared whiteboard |
 | --- | --- |
-| <img src="https://github.com/user-attachments/assets/bace93c8-fba7-4617-8732-123f3728fd72" alt="CodeCanvas collaborative code editor" /> | <img src="https://github.com/user-attachments/assets/84739101-4f93-4c34-99e6-548aae88d3a1" alt="CodeCanvas whiteboard" /> |
+| <img width="1885" height="862" src="https://github.com/user-attachments/assets/54b0845c-c6b4-40c0-aa29-fc9989ca31bd" alt="CodeCanvas collaborative code editor" /> | <img width="1868" height="867" src="https://github.com/user-attachments/assets/68da8fda-d85c-4a2b-8e61-b8a34a2678bf" alt="CodeCanvas whiteboard" /> |
 
 <!-- Media placeholders: add `docs/assets/workspace.gif`, `docs/assets/video-call.png`, and `docs/assets/mobile.png` when new captures are available. -->
 
